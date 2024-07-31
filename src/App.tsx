@@ -45,7 +45,7 @@ function App() {
   return (
     <div>
       <h1>json-schema-validation-in-browser</h1>
-        <p>tldr; it trys to validate the first paylaod with a "write" action and the second with a "delete" action</p>
+        <p><strong>tl;dr</strong> - validate the payload with a "write" action and the second with a "delete" action</p>
       <div className="card">
         <button onClick={handleGoodSchema}>✅ Test Good Schema</button>
         <button onClick={handleBadSchema}>🚫 Test Bad Schema</button>
