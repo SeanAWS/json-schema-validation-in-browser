@@ -1,5 +1,5 @@
 import "./App.css";
-import { Schema, validate, Validator } from "@cfworker/json-schema";
+import { Schema, Validator } from "@cfworker/json-schema";
 import schema from "./schema.json";
 import { useState } from "react";
 
@@ -41,7 +41,11 @@ function App() {
             🚫 Test Bad Schema
           </button>
           <hr style={{ width: "80%", borderColor: "#515151" }} />
-          <pre>{JSON.stringify(errors, null, 2)}</pre>
+          {errors ? (
+            <pre>{JSON.stringify(errors, null, 2)}</pre>
+          ) : (
+            <p>no validation errors found</p>
+          )}
         </div>
       </div>
       <div style={{ paddingLeft: 24 }}>
