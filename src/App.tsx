@@ -1,12 +1,12 @@
 import "./App.css";
-import { Validator } from "@cfworker/json-schema";
+import { Schema, Validator } from "@cfworker/json-schema";
 import schema from "./schema.json";
 import { useState } from "react";
 
-const validator = new Validator(schema);
+const validator = new Validator(schema as Schema);
 
 function App() {
-  const [errors, setErrors] = useState<any>();
+  const [errors, setErrors] = useState<Schema | null>();
 
   const handleGoodSchema = () => {
     const result = validator.validate({
@@ -45,12 +45,15 @@ function App() {
   return (
     <div>
       <h1>json-schema-validation-in-browser</h1>
-        <p><strong>tl;dr</strong> - validate the payload with a "write" action and the second with a "delete" action</p>
+      <p>
+        <strong>tl;dr</strong> - validate the payload with a "write" action and
+        the second with a "delete" action
+      </p>
       <div className="card">
         <button onClick={handleGoodSchema}>✅ Test Good Schema</button>
         <button onClick={handleBadSchema}>🚫 Test Bad Schema</button>
-          <hr style={{ width: "80%", borderColor: "#515151" }} />
-        <pre>{(JSON.stringify(errors, null, 2))}</pre>
+        <hr style={{ width: "80%", borderColor: "#515151" }} />
+        <pre>{JSON.stringify(errors, null, 2)}</pre>
       </div>
     </div>
   );
