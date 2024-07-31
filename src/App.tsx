@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { Validator } from "@cfworker/json-schema";
+import schema from "./schema.json";
+import { useState } from "react";
+
+const validator = new Validator(schema);
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [errors, setErrors] = useState<any>();
+
+  const handleGoodSchema = () => {
+    const result = validator.validate({
+      id: "test",
+      payload: {
+        action: "write",
+      },
+    });
+
+    if (result.errors.length) {
+      return setErrors(result.errors);
+    }
+
+    console.log(result);
+
+    setErrors(null);
+  };
+
+  const handleBadSchema = () => {
+    const result = validator.validate({
+      id: "test",
+      payload: {
+        action: "delete",
+      },
+    });
+
+    if (result.errors.length) {
+      return setErrors(result.errors);
+    }
+
+    console.log(result);
+
+    setErrors(null);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+    <div>
+      <h1>json-schema-validation-in-browser</h1>
+        <p>tldr; it trys to validate the first paylaod with a "write" action and the second with a "delete" action</p>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <button onClick={handleGoodSchema}>✅ Test Good Schema</button>
+        <button onClick={handleBadSchema}>🚫 Test Bad Schema</button>
+          <hr style={{ width: "80%", borderColor: "#515151" }} />
+        <pre>{(JSON.stringify(errors, null, 2))}</pre>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
